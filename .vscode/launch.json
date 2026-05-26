@@ -1,0 +1,77 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Accel-Sim: Release",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "/home/hossein/accelsim-chiplet-chiplet-in-order-trace-parser/gpu-simulator/bin/release/accel-sim.out",
+      "args": [
+        "-trace",
+        "/home/hossein/accelsim-chiplet-chiplet-in-order-trace-parser/test/kernelslist.g",
+        "-config",
+        "/home/hossein/accelsim-chiplet-chiplet-in-order-trace-parser/test/gpgpusim.config",
+        "-config",
+        "/home/hossein/accelsim-chiplet-chiplet-in-order-trace-parser/test/trace.config"
+      ],
+      "stopAtEntry": false,
+      "cwd": "/home/hossein/accelsim-chiplet-chiplet-in-order-trace-parser/test",
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    },
+    {
+      "name": "Accel-Sim: Debug",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "/home/hossein/accelsim-chiplet-chiplet-in-order-trace-parser/gpu-simulator/bin/debug/accel-sim.out",
+      "args": [
+        "-trace",
+        "/home/hossein/accelsim-chiplet-chiplet-in-order-trace-parser/test/kernelslist.g",
+        "-config",
+        "/home/hossein/accelsim-chiplet-chiplet-in-order-trace-parser/test/gpgpusim.config",
+        "-config",
+        "/home/hossein/accelsim-chiplet-chiplet-in-order-trace-parser/test/trace.config"
+      ],
+      "stopAtEntry": false,
+      "cwd": "/home/hossein/accelsim-chiplet-chiplet-in-order-trace-parser/test",
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    },
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [],
+      "stopAtEntry": false,
+      "externalConsole": false,
+      "cwd": "/home/hossein/accelsim-chiplet-chiplet-in-order-trace-parser/gpu-simulator/gpgpu-sim/src",
+      "program": "/home/hossein/accelsim-chiplet-chiplet-in-order-trace-parser/gpu-simulator/gpgpu-sim/src/build/Debug/",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}
+

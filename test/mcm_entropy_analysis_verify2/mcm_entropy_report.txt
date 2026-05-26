@@ -1,0 +1,77 @@
+MCM Entropy / Imbalance Analysis
+====================================
+
+Aggregate Traffic
+-----------------
+Total requests: 548
+Remote requests: 408
+Remote fraction: 0.7445
+Remote destination entropy: 0.0000
+Hottest remote destination fraction: 1.0000
+Remote DRAM entropy: 0.0000
+Hottest remote DRAM fraction: 1.0000
+Dominant remote destination chiplet: 1
+Dominant remote DRAM ID: 7
+
+Interpretation
+--------------
+Remote traffic is present, so destination/DRAM imbalance is meaningful.
+Remote destination-chiplet traffic is highly concentrated. This is a strong chiplet-level valley/hotspot signal.
+Remote DRAM traffic is highly concentrated. This is a strong memory-partition valley/hotspot signal.
+
+Per-Source Chiplet Hotspots
+---------------------------
+source_chiplet  total_requests  remote_frac  max_remote_dest_chiplet_frac  dominant_remote_dest_chiplet  max_remote_dram_id_frac  dominant_remote_dram_id
+             0             136     0.985294                           1.0                             1                      1.0                        7
+             2             136     1.000000                           1.0                             1                      1.0                        7
+             3             138     1.000000                           1.0                             1                      1.0                        7
+             1             138     0.000000                           0.0                            -1                      0.0                       -1
+
+Top Remote Buckets
+------------------
+source_chiplet  dest_chiplet  dram_id  remote_requests  remote_fraction
+           all             1        7              408              1.0
+             3             1        7              138              1.0
+             2             1        7              136              1.0
+             0             1        7              134              1.0
+
+Highest-Entropy Remote Address Bits
+-----------------------------------
+ bit  one_frac  entropy  total
+   0       0.0      0.0    408
+   1       0.0      0.0    408
+   2       0.0      0.0    408
+   3       0.0      0.0    408
+   4       0.0      0.0    408
+   5       0.0      0.0    408
+   6       0.0      0.0    408
+   7       0.0      0.0    408
+   8       0.0      0.0    408
+   9       0.0      0.0    408
+  10       0.0      0.0    408
+  11       0.0      0.0    408
+  12       1.0      0.0    408
+  13       0.0      0.0    408
+  14       0.0      0.0    408
+  15       0.0      0.0    408
+
+Lowest-Entropy Remote Address Bits
+----------------------------------
+ bit  one_frac  entropy  total
+   0       0.0      0.0    408
+   1       0.0      0.0    408
+   2       0.0      0.0    408
+   3       0.0      0.0    408
+   4       0.0      0.0    408
+   5       0.0      0.0    408
+   6       0.0      0.0    408
+   7       0.0      0.0    408
+   8       0.0      0.0    408
+   9       0.0      0.0    408
+  10       0.0      0.0    408
+  11       0.0      0.0    408
+  12       1.0      0.0    408
+  13       0.0      0.0    408
+  14       0.0      0.0    408
+  15       0.0      0.0    408
+
