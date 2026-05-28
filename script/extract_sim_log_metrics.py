@@ -33,6 +33,11 @@ def parse_args():
         help="Output CSV filename.",
     )
     parser.add_argument(
+        "--ipc-out",
+        default="gpu_tot_ipc_last.csv",
+        help="Output CSV filename for the last gpu_tot_ipc value per case.",
+    )
+    parser.add_argument(
         "--log-name",
         action="append",
         default=["sim_stdout.log", "sim.log"],
@@ -83,9 +88,25 @@ def parse_metric_and_value(line):
 
 def extract_case(case_dir, log_path, matcher):
     rows = []
+    last_gpu_tot_ipc = None
+    gpu_tot_ipc_re = re.compile(
+        r"\bgpu_tot_ipc\b\s*(?:=|:)?\s*"
+        r"([-+]?(?:\d+\.\d*|\.\d+|\d+)(?:[eE][-+]?\d+)?)",
+        re.IGNORECASE,
+    )
 
     with log_path.open("r", errors="replace") as f:
         for line_number, line in enumerate(f, start=1):
+            ipc_match = gpu_tot_ipc_re.search(line)
+            if ipc_match:
+                last_gpu_tot_ipc = {
+                    "case": case_dir.name,
+                    "log_file": str(log_path),
+                    "line_number": line_number,
+                    "gpu_tot_ipc": ipc_match.group(1),
+                    "raw_line": line.strip(),
+                }
+
             if not matcher.search(line):
                 continue
 
@@ -101,7 +122,7 @@ def extract_case(case_dir, log_path, matcher):
                 }
             )
 
-    return rows
+    return rows, last_gpu_tot_ipc
 
 
 def main():
@@ -112,6 +133,7 @@ def main():
     matcher = re.compile("|".join(f"(?:{p})" for p in patterns), re.IGNORECASE)
 
     rows = []
+    ipc_rows = []
     missing = []
 
     if not results_dir.is_dir():
@@ -123,7 +145,10 @@ def main():
             missing.append(case_dir.name)
             continue
 
-        rows.extend(extract_case(case_dir, log_path, matcher))
+        case_rows, ipc_row = extract_case(case_dir, log_path, matcher)
+        rows.extend(case_rows)
+        if ipc_row is not None:
+            ipc_rows.append(ipc_row)
 
     out_path = Path(args.out)
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -142,7 +167,24 @@ def main():
         writer.writeheader()
         writer.writerows(rows)
 
+    ipc_out_path = Path(args.ipc_out)
+    ipc_out_path.parent.mkdir(parents=True, exist_ok=True)
+
+    ipc_fieldnames = [
+        "case",
+        "log_file",
+        "line_number",
+        "gpu_tot_ipc",
+        "raw_line",
+    ]
+
+    with ipc_out_path.open("w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=ipc_fieldnames)
+        writer.writeheader()
+        writer.writerows(ipc_rows)
+
     print(f"Wrote {len(rows)} matching log lines to {out_path}")
+    print(f"Wrote {len(ipc_rows)} final gpu_tot_ipc values to {ipc_out_path}")
     if missing:
         print("No log file found for:")
         for name in missing:

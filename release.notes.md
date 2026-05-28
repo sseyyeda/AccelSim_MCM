@@ -1,4 +1,21 @@
 
+# Release v0.2-pagealloc-prefetch-profiling
+
+May 28, 2026.
+
+MCM research changes since `v0.1-batching-entropy`:
+
+1. Added page allocation policy `3`, a region remote-cost-aware first-touch
+   policy controlled by `-gpgpu_page_region_shift`,
+   `-gpgpu_page_remote_threshold`, `-gpgpu_page_balance_threshold`, and
+   `-gpgpu_page_region_min_accesses`.
+2. Added MCM prefetch characterization window logging with queue, DRAM, request
+   tracker, and interconnect pressure fields.
+3. Added `script/analyze_mcm_prefetch_opportunities.py` to generate text
+   reports and figures from entropy and prefetch-window logs.
+4. Added optional request-level profiling via `ACCELSIM_REQUEST_TRACE` and the
+   `gpu-simulator/gpgpu-sim/scripts/analyze_request_trace.py` analyzer.
+
 # Release v1.3.0
 
 Oct 19, 2021.

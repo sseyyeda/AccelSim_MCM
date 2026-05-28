@@ -1,6 +1,6 @@
 # AccelSim_MCM
 
-Version: `v0.1-batching-entropy`
+Version: `v0.2-pagealloc-prefetch-profiling`
 
 This repository is an Accel-Sim/GPGPU-Sim based MCM GPU simulator version with
 support for:
@@ -11,13 +11,50 @@ support for:
 - Compact batching summary CSV logging and analysis scripts.
 - MCM entropy/memory-mapping motivation logging.
 - Balanced first-touch page placement experiments.
+- Region remote-cost-aware page allocation policy `3`.
 - Optional entropy-aware DRAM-ID remapping.
+- Per-window MCM prefetch opportunity profiling with queue and network pressure
+  signals.
+- Optional request-level trace profiling through `ACCELSIM_REQUEST_TRACE`.
 
 The main local documentation for the new MCM features is in:
 
 - `README/l2_dram_traffic_optimizations.md`
 - `README/mcm_entropy_mapping.md`
+- `README/mcm_page_allocation_policies.md`
+- `README/mcm_prefetch_characterization.md`
 - `script/l2_dram_batching_README.md`
+- `gpu-simulator/gpgpu-sim/scripts/request_trace_README.md`
+
+## MCM Version Notes
+
+### `v0.2-pagealloc-prefetch-profiling`
+
+This version adds the second characterization layer for MCM prefetching and a
+new page placement policy:
+
+- `-gpgpu_page_alloc_policy 3`: region remote-cost-aware first-touch page
+  placement. The policy keeps first-touch locality unless the surrounding
+  address region has enough remote/shared behavior and the source chiplet is
+  meaningfully overloaded.
+- Prefetch characterization window logging:
+  `-gpgpu_mcm_prefetch_window_log_enable`,
+  `-gpgpu_mcm_prefetch_window_cycles`, and
+  `-gpgpu_mcm_prefetch_window_file`.
+- Queue and pressure fields in `mcm_prefetch_window_stats.csv`, including
+  remote request queue utilization, L2-to-DRAM queue utilization, DRAM queue
+  utilization, request tracker occupancy, and interconnect busy indicators.
+- `script/analyze_mcm_prefetch_opportunities.py` for text and figure output
+  from entropy logs plus prefetch window logs.
+- `ACCELSIM_REQUEST_TRACE=<file.csv>` for optional request-level profiling,
+  with `gpu-simulator/gpgpu-sim/scripts/analyze_request_trace.py` for locality,
+  batching, route, and stride summaries.
+
+### `v0.1-batching-entropy`
+
+The previous version provided the MCM batching, L2-to-DRAM reordering, entropy,
+and DRAM-ID remapping baseline. It is preserved as the old-version branch/tag
+when this release is pushed.
 
 # Welcome to the top-level repo of Accel-Sim and AccelWattch
 
